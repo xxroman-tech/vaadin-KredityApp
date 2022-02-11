@@ -42,4 +42,12 @@ public class Login {
     public int getUserIDDb() {
         return this.userIDDb;
     }
+    
+    public SQLLogger getLogger() {
+    	return this.logger;
+    }
+    
+    public String getUsername() {
+    	return this.usernameDb;
+    }
 }
