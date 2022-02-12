@@ -22,10 +22,11 @@ public class LoginView extends VerticalLayout {
 	
 	private Login loginHelper = new Login();
     private CitacPredmetov citac;
-    
+    private KredityTable kredityTable;
 
-	HorizontalLayout prihlasovacia = new HorizontalLayout();
-	HorizontalLayout userinterface = new HorizontalLayout();
+	private HorizontalLayout prihlasovacia = new HorizontalLayout();
+	private VerticalLayout userinterface = new VerticalLayout();
+	private KredityTable kredityTabulka;
 	
 	private TextField userInput = new TextField("Meno");
 	private PasswordField passInput= new PasswordField("Heslo");
@@ -38,7 +39,6 @@ public class LoginView extends VerticalLayout {
 		
 		this.zobrazPrihlasovaciuCast();
 		this.zobrazUserInterface();
-	
 	}
 	
 	private void zobrazPrihlasovaciuCast() {
@@ -49,7 +49,7 @@ public class LoginView extends VerticalLayout {
 	}
 	
 	private void zobrazUserInterface() {
-		userinterface.setAlignItems(Alignment.END);
+		userinterface.setAlignItems(Alignment.CENTER);
 		userinterface.setJustifyContentMode(JustifyContentMode.CENTER);
 		add(userinterface);
 	}
@@ -57,6 +57,11 @@ public class LoginView extends VerticalLayout {
 	private void pridajKredityText(H3 text) {
 		userinterface.removeAll();
 		userinterface.add(text);
+	}
+	
+	private void pridajTabulku() {
+		this.kredityTable = new KredityTable(this.citac);
+		this.userinterface.add(this.kredityTable.getGrid());
 	}
 	
 	private void nacitajData() {
@@ -68,6 +73,7 @@ public class LoginView extends VerticalLayout {
 			this.zmazFormulare();
 			this.nacitajData();
 			this.pridajKredityText(new H3("Váš počet kreditov: " + this.citac.getPocetKreditov()));
+			this.pridajTabulku();
 		}
 	}
 	
