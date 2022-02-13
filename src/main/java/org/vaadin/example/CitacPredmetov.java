@@ -26,6 +26,7 @@ public class CitacPredmetov {
         if (this.nacitajPredemty()) {
             System.out.println("Data loaded");
             this.urciPocetKreditov();
+            this.urciPocetPovVolitelnychPredmetov();
         } else {
             System.out.println("Database Error !!!! Nepodarilo sa nacitat predmety");
         }
@@ -82,7 +83,7 @@ public class CitacPredmetov {
         if (text.equals("Pov.")) {
             return PovinnostPredmetu.POVINNY;
         } else if (text.equals("P.V.")) {
-            return PovinnostPredmetu.POVINNEVYB;
+            return PovinnostPredmetu.POVINNEVOL;
         } else if (text.equals("Vyb.")) {
             return PovinnostPredmetu.VYBEROVY;
         } else {
@@ -106,10 +107,14 @@ public class CitacPredmetov {
 
     private void urciPocetPovVolitelnychPredmetov() {
         for (Predmet p : this.zoznamPredmetov.values()) {
-            if (p.getPovinnost() == PovinnostPredmetu.POVINNEVYB) {
+            if (p.getPovinnost() == PovinnostPredmetu.POVINNEVOL) {
                 this.pocetPovVolPredmetov += p.getKredity();
             }
         }
+    }
+    
+    public int getPocetPredmetov() {
+    	return this.zoznamPredmetov.size();
     }
 
     public HashMap<String, Predmet> getZoznamPredmetov() {

@@ -11,6 +11,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.provider.SortDirection;
 
 public class KredityTable {
     private HashMap<String, Predmet> zoznamPredmetov;
@@ -34,7 +35,7 @@ public class KredityTable {
         this.grid.addColumn(Predmet::getKredity).setHeader("Kredity");
         
         this.grid.setWidth("100%");
-        this.grid.setHeight("75vh");
+        this.grid.setHeight("50vh");
         this.grid.setWidthFull();
 	}
 	
