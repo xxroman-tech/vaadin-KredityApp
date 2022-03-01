@@ -29,6 +29,7 @@ public class LoginView extends VerticalLayout {
 	private VerticalLayout userinterface = new VerticalLayout();
 	private HorizontalLayout menuForUser = new HorizontalLayout();
 	private HorizontalLayout pridaniePredmetuLayout = new HorizontalLayout();
+	private HorizontalLayout zmazaniePredmetuLayout = new HorizontalLayout();
 	private KredityTable kredityTabulka;
 
 	private Select<String> select = new Select<>();
@@ -39,6 +40,7 @@ public class LoginView extends VerticalLayout {
 	private Button najstButton = new Button("Zobraz kredity", event -> this.podariloSaPrihlasit());
 	private Button spat = new Button("Späť", evnet -> this.vratSaSpat());
 	private Button pridajPredmet = new Button("Pridaj predmet", event -> this.pridaniePredmetu());
+	private Button zmazPredmet = new Button("Zmaž predmet", event -> this.mazaniePredmetu());
 
 	public LoginView() {
 		setAlignItems(Alignment.CENTER);
@@ -145,13 +147,41 @@ public class LoginView extends VerticalLayout {
 		this.pridaniePredmetuLayout.add(vlozPredmet);
 	}
 	
+	private void mazaniePredmetu() {
+		this.zmazaniePredmetuLayout.setAlignItems(Alignment.END);
+		this.zmazaniePredmetuLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+		this.zmazaniePredmetuLayout.setMargin(false);
+		this.zmazaniePredmetuLayout.setWidth("100%");
+		this.prihlasovacia.add(this.spat);
+		
+		this.zmazUserInterface();
+		TextField cisloPredmetuInput = new TextField("Číslo");
+		TextField kredityInput = new TextField("Kredity");
+		
+		this.zmazaniePredmetuLayout.add(cisloPredmetuInput, kredityInput);
+		this.userinterface.add(this.zmazaniePredmetuLayout);
+		
+		MazacPredmetov mazac = new MazacPredmetov(this.loginHelper.getLogger(), this.loginHelper.getUserIDDb());
+		
+		Button zmazPredmetButton = new Button("Zmaž", event -> {
+			if (mazac.zmaz(cisloPredmetuInput.getValue(), Integer.parseInt(kredityInput.getValue()))) {
+				Notification.show("Predmet " + cisloPredmetuInput.getValue() + " bol vymazaný");
+				this.vratSaSpat();
+			} else {
+				Notification.show("Predmet " + cisloPredmetuInput.getValue() + " sa nepodarilo vymazat");
+			}
+		});
+		
+		this.zmazaniePredmetuLayout.add(zmazPredmetButton);
+	}
+	
 	private void zobrazTabulkuInterface() {
 		this.nacitajData();
 		this.pridajKredityText(new H3("Váš počet kreditov: " + this.citac.getPocetKreditov() + " -----> P.V.: " + this.citac.getPocetPovVolPredmetov()));
 		if (this.citac.getPocetPredmetov() > 0) {
 			this.zobrazMenuForUser();
 			this.pridajTabulku();
-			this.userinterface.add(this.pridajPredmet);
+			this.userinterface.add(this.pridajPredmet, this.zmazPredmet);
 		} else {
 			this.userinterface.add(this.pridajPredmet);
 		} 
@@ -165,6 +195,7 @@ public class LoginView extends VerticalLayout {
 	private void zmazUserInterface() {
 		this.userinterface.removeAll();
 		this.pridaniePredmetuLayout.removeAll();
+		this.zmazaniePredmetuLayout.removeAll();
 	}
 	
 	private void zmazFormulare() {
